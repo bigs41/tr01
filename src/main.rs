@@ -4,8 +4,12 @@ extern crate rocket;
 #[macro_use]
 extern crate diesel;
 
-mod routes;
-mod models;
+mod routes {
+    pub mod index;
+}
+mod models {
+    pub mod user;
+}
 mod schema;
 mod utils;
 
@@ -23,7 +27,7 @@ fn rocket() -> Rocket {
     rocket::build()
         .attach(DbConn::fairing())
         .attach(AdHoc::on_ignite("Database Migrations", run_migrations))
-        .mount("/", routes![routes::index])
+        .mount("/", routes![routes::index::index])
 }
 
 async fn run_migrations(rocket: Rocket) -> Rocket {
